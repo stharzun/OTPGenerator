@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -12,10 +13,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20dp" />
-    <Button
+
+    <Button android:id="@+id/btn_fullscreen_ad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="generate OTP"
-        android:id="@+id/generator"
-        />
+        android:layout_centerInParent="true"
+        android:text="btn_fullscreen_ad"/>
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_home_footer">
+    </com.google.android.gms.ads.AdView>
 </LinearLayout>

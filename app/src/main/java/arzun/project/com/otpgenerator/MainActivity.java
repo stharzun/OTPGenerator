@@ -1,6 +1,7 @@
 package arzun.project.com.otpgenerator;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.CountDownTimer;
 import android.os.Looper;
 import android.os.Message;
@@ -10,6 +11,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.lang.reflect.UndeclaredThrowableException;
 import java.math.BigInteger;
@@ -34,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     Button btnGenerator;
     String otp;
     static String abc;
+    private AdView mAdView;
+    private Button btnFullscreenAd;
 
     // Seed for HMAC-SHA1 - 20 bytes
     String seed = "3132333435363738393031323334353637383930";
@@ -59,8 +65,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                // Check the LogCat to get your test device ID
+                .addTestDevice("C04B1BFFB0774708339BC273F8A43708")
+                .build();
+        mAdView.loadAd(adRequest);
+
+        btnFullscreenAd = (Button) findViewById(R.id.btn_fullscreen_ad);
+        btnFullscreenAd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, SecondActivity.class));
+            }
+        });
+
         display = (TextView) findViewById(R.id.OTP_LOGIN_MSG);
-        btnGenerator = (Button) findViewById(R.id.generator);
+        btnGenerator = (Button) findViewById(R.id.btn_fullscreen_ad);
 
         final android.os.Handler handler = new android.os.Handler();
         final int time1 = 30000;
@@ -186,6 +208,29 @@ public class MainActivity extends AppCompatActivity {
         }
         abc=result;
         return result;
+    }
+    @Override
+    public void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        super.onDestroy();
     }
 }
 
